@@ -39,14 +39,14 @@ const createWorkout = async (req, res) => {
 
     try{
 
-        await workoutModel.create({
+        const workout =  await workoutModel.create({
             title, reps, load
         })
 
-        res.status(200).json("Workout saved!")
+        res.status(200).json(workout)
     }
     catch(error){
-        res.status(400).json({error: "Something went wrong..."})
+        res.status(400).json({ error: error.message })
     }
 }
 
@@ -68,7 +68,7 @@ const deleteWorkout = async (req, res) => {
         return res.status(400).json({msg: "No such workout"})
     }
 
-    res.status(200).json({msg: "Workout deleted succesfully!"})
+    res.status(200).json(workout);
 }
 
 // update a workout
