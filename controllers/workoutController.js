@@ -37,17 +37,12 @@ const createWorkout = async (req, res) => {
     // all the information that comes along in the req 
     const { title, reps, load } = req.body;
 
-    try{
+    const workout =  await workoutModel.create({
+        title, reps, load
+    })
 
-        const workout =  await workoutModel.create({
-            title, reps, load
-        })
-
-        res.status(200).json(workout)
-    }
-    catch(error){
-        res.status(400).json({ error: error.message })
-    }
+    res.status(200).json(workout)
+    
 }
 
 // delete workout

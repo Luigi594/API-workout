@@ -1,5 +1,6 @@
 import express from 'express';
 import { createWorkout, getWorkout, getSingleWorkout, deleteWorkout, updateWorkout } from '../controllers/workoutController.js' 
+import { ValidatonFields } from '../middleware/validations.js';
 
 const router = express.Router();
 
@@ -10,7 +11,7 @@ router.get('/', getWorkout)
 router.get('/:id', getSingleWorkout)
 
 // post a new workout
-router.post('/', createWorkout)
+router.post('/', ValidatonFields, createWorkout)
 
 // delete a workout
 router.delete('/:id', deleteWorkout)
