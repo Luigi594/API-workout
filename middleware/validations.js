@@ -1,4 +1,4 @@
-import { body, validationResult } from 'express-validator';
+import { body, check, validationResult } from 'express-validator';
 
 const ValidatonFields = [
 
@@ -23,4 +23,30 @@ const ValidatonFields = [
     }
 ]
 
-export { ValidatonFields }
+const ValidationSignup = [
+
+    body('email').isEmail()
+    .withMessage("Incorrect email format"),
+
+    check('password')
+    .isLength({ min: 8})
+    .withMessage('The password must be +8 chars long')
+    .matches(/\d/)
+    .withMessage('Password must contain a number')
+    .not()
+    .isIn(['123', 'abc', 'password', 'password123', 'god'])
+    .withMessage('Please do not use a common word as the password'),
+
+    (req, res, next) => {
+
+        const errors = validationResult(req);
+
+        if(!errors.isEmpty()){
+            return res.status(400).json({ error: errors.array().map((e) => e.msg)});
+        }
+
+        next();
+    }
+]
+
+export { ValidatonFields, ValidationSignup }
