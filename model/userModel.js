@@ -21,6 +21,10 @@ const userSchema = new Schema({
 // static signup method
 userSchema.statics.signup = async function(email, password) {
 
+    if(!email || !password){
+        throw Error('All fields must be filled')
+    }
+
     // if the email already exists
     const existingEmail = await this.findOne({ email })
 
@@ -37,6 +41,30 @@ userSchema.statics.signup = async function(email, password) {
     })
 
     return user
+}
+
+// static login method
+userSchema.statics.login = async function(email, password){
+
+    if(!email || !password){
+        throw Error('All fields must be filled')
+    }
+
+    const user = await this.findOne({ email })
+
+    if(!user){
+        throw Error('Incorrect Email')
+    }
+
+    // compare the plain text and the hashed password stored in the database
+    const matchPassword = await bcrypt.compare(password, user.password);
+
+    if(!matchPassword){
+        throw Error('Incorrect password')
+    }
+
+    return user
+
 }
 
 export default mongoose.model("user", userSchema);
