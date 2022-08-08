@@ -30,9 +30,7 @@ const ValidationSignup = [
 
     check('password')
     .isLength({ min: 8})
-    .withMessage('The password must be +8 chars long')
-    .matches(/\d/)
-    .withMessage('Password must contain a number')
+    .withMessage('Password is not strong enough')
     .not()
     .isIn(['123', 'abc', 'password', 'password123', 'god'])
     .withMessage('Please do not use a common word as the password'),
