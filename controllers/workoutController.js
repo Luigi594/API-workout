@@ -4,8 +4,10 @@ import workoutModel from '../model/workoutModel.js';
 // get all workouts
 const getWorkout = async (req, res) => {
 
+    const user_id = req.user._id;
+
     // ordered by descending
-    const workouts = await workoutModel.find({}).sort({createdAt: -1})
+    const workouts = await workoutModel.find({ user_id }).sort({createdAt: -1})
     res.status(200).json(workouts);
 }
 
@@ -37,8 +39,13 @@ const createWorkout = async (req, res) => {
     // all the information that comes along in the req 
     const { title, reps, load } = req.body;
 
+    // I grab this property of the req.user from the middleware
+    // for the authorization, so we have access to this property _id
+    // to create a workout base on a single user     
+    const user_id = req.user._id
+
     const workout =  await workoutModel.create({
-        title, reps, load
+        title, reps, load, user_id
     })
 
     res.status(200).json(workout)
